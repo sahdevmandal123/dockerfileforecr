@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCOUNT_ID="120717539064"
-        AWS_DEFAULT_REGION="us-west-2"
-        IMAGE_REPO_NAME="sample"
+        AWS_ACCOUNT_ID="343378861673"
+        AWS_DEFAULT_REGION="ap-south-1"
+        IMAGE_REPO_NAME="my-docker-repo"
         IMAGE_TAG="v1"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
@@ -21,7 +21,7 @@ pipeline {
         
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/sd031/aws_codebuild_codedeploy_nodeJs_demo.git']]])     
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'ad40d6a8-6825-40a0-8dc9-3c9967e7ddcd', url: 'https://github.com/sahdevmandal123/dockerfileforecr.git']]])     
             }
         }
   
