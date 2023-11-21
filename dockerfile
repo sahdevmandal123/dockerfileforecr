@@ -1,19 +1,15 @@
-FROM node:14
+# Pull base image
+FROM Linux: latest
 
-# Setting working directory. All the path will be relative to WORKDIR
-WORKDIR /usr/src/app
+# Dockerfile Maintainer
+MAINTAINER Jan Wagner "waja@cyconet.org"
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+# Install nginx and adjust nginx config to stay in the foreground
+RUN yum update && yum install -y nginx; \
+ echo "daemon off;" >> /etc/nginx/nginx.conf
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
+# Expose HTTP
+EXPOSE 80
 
-# Bundle app source
-COPY . .
-
-EXPOSE 3000
-CMD [ "node", "index.js" ]
+# Start nginx
+CMD ["/usr/bin/nginx"]
