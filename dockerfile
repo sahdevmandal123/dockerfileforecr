@@ -1,19 +1,14 @@
-FROM node:14
+FROM jaronoff/listmkr-prod
+# Remove the default nginx index.html
+RUN rm -rf /var/www/html/index.nginx-debian.html
 
-# Setting working directory. All the path will be relative to WORKDIR
-WORKDIR /usr/src/app
+RUN npm run deploy:prod
+# Copy the contents of the dist directory over to the nginx web root
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+RUN ls dist
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
-COPY . .
-
-EXPOSE 3000
-CMD [ "node", "index.js" ]
+COPY dist/* /var/www/html/
+# Expose the public http port
+EXPOSE 80
+# Start server
+CMD ["nginx", "-g", "daemon off;"]
