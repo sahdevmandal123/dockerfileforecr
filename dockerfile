@@ -1,14 +1,14 @@
-FROM jaronoff/listmkr-prod
-# Remove the default nginx index.html
-RUN rm -rf /var/www/html/index.nginx-debian.html
+# Use the official Nginx base image
+FROM nginx:latest
 
-RUN npm run deploy:prod
-# Copy the contents of the dist directory over to the nginx web root
+# Copy your local Nginx configuration file to the container
+COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN ls dist
+# Copy your web content to the default Nginx document root
+COPY html /usr/share/nginx/html
 
-COPY dist/* /var/www/html/
-# Expose the public http port
+# Expose the default Nginx port
 EXPOSE 80
-# Start server
+
+# Command to start Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
