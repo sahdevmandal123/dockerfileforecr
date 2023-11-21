@@ -1,14 +1,14 @@
-# Use the official Nginx base image
-FROM nginx:latest
+# Use the official OpenJDK base image
+FROM openjdk:11-jre-slim
 
-# Copy your local Nginx configuration file to the container
-COPY nginx.conf /etc/nginx/nginx.conf
+# Set the working directory inside the container
+WORKDIR /app
 
-# Copy your web content to the default Nginx document root
-COPY html /usr/share/nginx/html
+# Copy the JAR file into the container at /app
+COPY target/your-spring-boot-app.jar /app/your-spring-boot-app.jar
 
-# Expose the default Nginx port
-EXPOSE 80
+# Expose the port that the Spring Boot application will run on
+EXPOSE 8080
 
-# Command to start Nginx when the container starts
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run your Spring Boot application
+CMD ["java", "-jar", "your-spring-boot-app.jar"]
