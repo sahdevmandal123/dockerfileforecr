@@ -1,5 +1,5 @@
 # Pull base image
-FROM Linux: latest
+FROM debian:latest
 
 # Dockerfile Maintainer
 MAINTAINER Jan Wagner "waja@cyconet.org"
