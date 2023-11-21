@@ -1,4 +1,5 @@
-FROM openjdk
-COPY target/*.jar /
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","/my-app-1.0-SNAPSHOT.jar"]
+FROM openjdk:8-jdk-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+COPY --from=build /home/app/target/war_name.war app.war
+ENTRYPOINT ["java","-jar","/app.war"]
