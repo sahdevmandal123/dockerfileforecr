@@ -1,12 +1,19 @@
-# Build stage
-FROM maven:3.8.4-openjdk-11-slim AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean install
+FROM node:14
 
-# Run stage
-FROM openjdk:11-jre-slim
-WORKDIR /app
-COPY --from=build /app/target/your-spring-boot-app.jar /app/your-spring-boot-app.jar
-EXPOSE 8080
-CMD ["java", "-jar", "your-spring-boot-app.jar"]
+# Setting working directory. All the path will be relative to WORKDIR
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
+COPY . .
+
+EXPOSE 3000
+CMD [ "node", "index.js" ]
